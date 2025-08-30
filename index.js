@@ -209,11 +209,13 @@ app.delete("/itemcart", authMidlleware, async(req,res)=>{
 
 
 
-mongoose.connect(process.env.MONGO_URI,{ serverSelectionTimeoutMS: 5500}).then(()=>{
-  console.log("connected to mongodb");
-  app.listen(5500,()=>{
-    console.log("the server is starting");
-  })
-}).catch((err)=>{
+const PORT = process.env.PORT || 5500;
+
+mongoose.connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 5500 }).then(() => {
+  console.log("Connected to MongoDB");
+  app.listen(PORT, '0.0.0.0', () => { // <-- Use the PORT variable and listen on '0.0.0.0'
+    console.log(`Server is running on port ${PORT}`);
+  });
+}).catch((err) => {
   console.log(err);
-})
+});
