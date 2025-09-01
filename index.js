@@ -76,13 +76,13 @@ app.post('/login', async (req,res)=>{
   const user = await User.findOne({email:useremail})
 
   if(!user){
-       return res.status(404).json({message:"email doesnt not exist"})
+       return res.status(404).json({message:"wrong email or password"})
 
   }
   const isvalidpassword = await bcrypt.compare(userpassword,user.password)
   if(!isvalidpassword){
    
-        return res.status(404).json({message:"does not exist"})
+        return res.status(404).json({message:"wrong email or password"})
   }
 
   user.password=undefined
