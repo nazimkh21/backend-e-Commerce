@@ -218,7 +218,7 @@ app.get("/auth/google",
 
 // Step 2: Google callback
 app.get(
-  "/google/callback",
+  "/auth/google/callback",
   passport.authenticate("google", { session: false,
   failureRedirect: `${process.env.FRONTEND_URL}/auth/failure`
    }),
