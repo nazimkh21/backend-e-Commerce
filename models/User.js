@@ -4,6 +4,13 @@ const userSchema = new mongoose.Schema({
     password:String,
     name:String,
     role: String,
+
+    // for google login
+
+    googleId: {type: String,unique: true, sparse: true},
+    avatar: String,
+
+    
     items:{
      type:[{
         id:{type:Number},

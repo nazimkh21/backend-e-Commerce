@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const authMidlleware = require("./middleware/authMiddleware")
 const cors = require("cors")
 require('dotenv').config();
+const passport = require("./middleware/auth")
 
 
 
@@ -206,6 +207,35 @@ app.delete("/itemcart", authMidlleware, async(req,res)=>{
     
   }
 })
+
+
+// google handle login
+
+// Step 1: Redirect to Google login
+app.get("/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+// Step 2: Google callback
+app.get(
+  "/google/callback",
+  passport.authenticate("google", { session: false,
+  failureRedirect: `${process.env.FRONTEND_URL}/auth/failure`
+   }),
+  (req, res) => {
+    // Issue JWT just like /login
+    const token = jwt.sign(
+      { id: req.user._id, email: req.user.email, role: req.user.role,username: req.user.name },
+      process.env.JWT_SECRET,
+      { expiresIn: "1y" }
+    );
+
+    // redirect with token in URL (frontend extracts it & stores in localStorage)
+    res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${token}`);
+  }
+);
+
+
 
 
 
